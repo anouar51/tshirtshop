@@ -22,6 +22,9 @@ public class Product {
     private double price;
     private String sku;
 
+    @Column(length = 100)
+    private String brand; // ✅ nouvelle colonne
+
     @Column(name = "image_url")
     private String imageUrl;
 
