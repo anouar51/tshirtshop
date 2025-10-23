@@ -3,23 +3,27 @@ package com.ecommerce.tshirtshop.controller;
 import com.ecommerce.tshirtshop.model.Category;
 import com.ecommerce.tshirtshop.model.Product;
 import com.ecommerce.tshirtshop.repository.CategoryRepository;
+import com.ecommerce.tshirtshop.repository.ProductRepository;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+// (n’oublie pas d’ajouter cet import en haut du fichier)
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
-    public CategoryController(CategoryRepository categoryRepository) {
+    public CategoryController(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
-    // 🔹 Liste de toutes les catégories
     @GetMapping
     public List<CategoryResponse> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
@@ -34,15 +38,12 @@ public class CategoryController {
                 .collect(Collectors.toList());
     }
 
-    // 🔹 Obtenir les produits d'une catégorie spécifique
+    // ✅ Nouvelle méthode correcte : charge les produits depuis ProductRepository
     @GetMapping("/{id}/products")
     public List<Product> getProductsByCategory(@PathVariable Long id) {
-        return categoryRepository.findById(id)
-                .map(Category::getProducts)
-                .orElse(List.of());
+        return productRepository.findByCategoryId(id);
     }
 
-    // 🔹 Prendre l’image du produit le plus récent
     private String getLatestProductImage(Category cat) {
         if (cat.getProducts() == null || cat.getProducts().isEmpty()) {
             return null;

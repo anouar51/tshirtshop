@@ -1,5 +1,6 @@
 package com.ecommerce.tshirtshop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,15 +19,14 @@ public class Product {
     private String name;
 
     private String description;
-
     private double price;
-
     private String sku;
 
-    @Column(name = "image_url")  // ✅ pour que Hibernate fasse le lien avec la colonne SQL
+    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference // 🔹 casse la boucle JSON
     private Category category;
 }

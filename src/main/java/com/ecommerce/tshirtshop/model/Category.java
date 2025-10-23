@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Data  // ✅ crée automatiquement les getters et setters
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "categories")
@@ -21,8 +21,7 @@ public class Category {
 
     private String description;
 
-    // ✅ Relation 1 catégorie → plusieurs produits
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference // 🔹 indique le côté "parent" de la relation
     private List<Product> products;
 }
