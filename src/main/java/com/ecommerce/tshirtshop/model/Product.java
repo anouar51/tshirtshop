@@ -19,7 +19,7 @@ public class Product {
     private String name;
 
     private String description;
-    private double price;
+    private Double price;
     private String sku;
 
     @Column(length = 100)
@@ -32,4 +32,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonBackReference // 🔹 casse la boucle JSON
     private Category category;
+
+    @Column(name = "keywords")
+    private String keywords;
 }
